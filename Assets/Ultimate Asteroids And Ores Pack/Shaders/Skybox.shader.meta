@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 115b180c73e45d24aad0fb94fc3ed25a
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 341192
+  packageName: Ultimate Low Poly Asteroid and Ore Pack
+  packageVersion: 1.0
+  assetPath: Assets/Ultimate Asteroids And Ores Pack/Shaders/Skybox.shader
+  uploadId: 809034
