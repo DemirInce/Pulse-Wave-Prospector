@@ -26,6 +26,8 @@ public class ShipController : MonoBehaviour
 
     private CharacterController controller;
 
+    private DropSpawner spawner;
+
     public Vector3 velocity;
     private float currentThrust;
 
@@ -33,18 +35,15 @@ public class ShipController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         dmgEffects = GetComponent<DamageEffects>();
+        spawner = GetComponent<DropSpawner>();
 
         health = maxHealth;
 
-        // Setup damage thresholds (same logic as enemy)
         thresholds = new float[5];
         for (int i = 0; i < 5; i++)
         {
             thresholds[i] = maxHealth * (5 - i) / 6f;
         }
-
-        if (dmgEffects != null)
-            dmgEffects.ResetPoints();
     }
 
     // ---------------- MOVEMENT ----------------
@@ -119,6 +118,9 @@ public class ShipController : MonoBehaviour
         ApplyDrag();
         Move();
         UpdateThruster();
+        ManageEffects();
+
+        if (velocity.sqrMagnitude < 0.1 * 0.1) velocity = Vector3.zero;
     }
 
     // ---------------- DAMAGE ----------------
@@ -129,9 +131,16 @@ public class ShipController : MonoBehaviour
 
         health -= damage;
 
-        // Trigger staged damage effects
+        if (health <= 0f)
+        {
+            Die();
+        }
+    }
+
+    private void ManageEffects()
+    {
         while (nextThresholdIndex < thresholds.Length &&
-               health <= thresholds[nextThresholdIndex])
+            health <= thresholds[nextThresholdIndex])
         {
             if (dmgEffects != null)
                 dmgEffects.SpawnEffect();
@@ -139,9 +148,13 @@ public class ShipController : MonoBehaviour
             nextThresholdIndex++;
         }
 
-        if (health <= 0f)
+        while (nextThresholdIndex > 0 &&
+            health > thresholds[nextThresholdIndex - 1])
         {
-            Die();
+            nextThresholdIndex--;
+
+            if (dmgEffects != null)
+                dmgEffects.RemoveEffect();
         }
     }
 
@@ -151,6 +164,8 @@ public class ShipController : MonoBehaviour
 
         if (explosionPrefab != null)
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+        spawner.SpawnDrops(maxHealth);
 
         Destroy(gameObject);
     }

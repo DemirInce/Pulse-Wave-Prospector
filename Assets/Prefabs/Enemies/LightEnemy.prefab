@@ -44766,6 +44766,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 8571349977848822951, guid: c0bdc470c116647a89b9d07608270aab, type: 3}
   fireRate: 0.07
   bulletSpeed: 20
+  MaxAmmo: 100
+  ammo: 0
 --- !u!1 &8627030586328036544
 GameObject:
   m_ObjectHideFlags: 0
@@ -54613,6 +54615,7 @@ GameObject:
   - component: {fileID: 4127614350488166514}
   - component: {fileID: 4516425745797233163}
   - component: {fileID: 1209101379217346646}
+  - component: {fileID: -8314770286359500291}
   m_Layer: 0
   m_Name: LightEnemy
   m_TagString: Enemy
@@ -54841,3 +54844,20 @@ MonoBehaviour:
   - {fileID: 3702273601329515879, guid: e3c904f504c3b48b48fd92be746e9859, type: 3}
   - {fileID: 317609532283168600, guid: f8a1cdf2b2b2948a2bdf4dfcf6cede3a, type: 3}
   - {fileID: 1360490635475708267, guid: 59ffa9929cc524544859c9d805c8ac11, type: 3}
+--- !u!114 &-8314770286359500291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8961825844107667918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24c968581479c4762ac81aaa5d59e031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropSpawner
+  Pickups:
+  - {fileID: 2109090537653498797, guid: 984e8b8828ae144fbb8e1f02f4e618f9, type: 3}
+  - {fileID: 4778217041018487417, guid: 2119716e2da0e45f9858cfe3c8966974, type: 3}
+  DropDivider: 100
+  DropRadius: 5

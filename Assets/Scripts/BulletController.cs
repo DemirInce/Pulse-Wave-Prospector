@@ -29,7 +29,7 @@ public class BulletController : MonoBehaviour
     {
         if (other.CompareTag("Border"))
             return;
-        if (timeAlive < 0.03f)
+        if (timeAlive < 0.03f || (timeAlive < 0.1f && other.CompareTag("Player")))
             return;
         if (other.CompareTag("Enemy") || other.CompareTag("Player"))
         {

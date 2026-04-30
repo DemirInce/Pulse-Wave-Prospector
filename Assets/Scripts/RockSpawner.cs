@@ -12,6 +12,7 @@ public class RockSpawner : MonoBehaviour
     public int rockCount = 50;
 
     public int Layer = 0;
+    public float heightVariation = 0f;
 
     [Header("Randomization")]
     public Vector2 scaleRange = new Vector2(0.5f, 2f);
@@ -51,12 +52,15 @@ public class RockSpawner : MonoBehaviour
                 spawnPos = GetRandomPointOnPlane();
                 scale = Random.Range(scaleRange.x, scaleRange.y);
                 radius = GetPrefabRadius(prefab) * scale + extraSpacing;
+
+                spawnPos.y += Random.Range(-heightVariation, heightVariation);
+
                 attempts++;
             }
             while (!IsValidPosition(spawnPos, radius) && attempts < maxAttempts);
 
             if (attempts >= maxAttempts)
-                continue; // skip if no valid spot found
+                continue;
 
             Quaternion rotation = Random.rotation;
 
@@ -95,7 +99,7 @@ public class RockSpawner : MonoBehaviour
     {
         Renderer rend = prefab.GetComponentInChildren<Renderer>();
         if (rend == null)
-            return 0.5f; // fallback if no renderer found
+            return 0.5f;
 
         return rend.bounds.extents.magnitude;
     }

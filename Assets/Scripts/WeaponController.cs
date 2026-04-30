@@ -8,8 +8,16 @@ public class Weapon : MonoBehaviour
     public float fireRate = 0.1f;
     public float bulletSpeed = 20f;
 
+    public int MaxAmmo = 100;
+    public int ammo;
+
     private int currentNozzle = 0;
     private Coroutine firingCoroutine;
+
+    private void Awake()
+    {
+        ammo = MaxAmmo;
+    }
 
     public void SetFiring(bool firing)
     {
@@ -39,6 +47,8 @@ public class Weapon : MonoBehaviour
 
     void Shoot()
     {
+        if (ammo <= 0) return;
+
         if (nozzles.Length == 0) return;
 
         Transform nozzle = nozzles[currentNozzle];
@@ -48,6 +58,8 @@ public class Weapon : MonoBehaviour
             nozzle.position,
             nozzle.rotation
         );
+
+        ammo -= 1;
 
         Vector3 velocity = GetComponentInParent<ShipController>().velocity;
 
@@ -62,7 +74,7 @@ public class Weapon : MonoBehaviour
 
             float forwardSpeed = Vector3.Dot(horizontalVelocity, forward);
 
-            if (forwardSpeed > 0f)
+            if (forwardSpeed >= 0f)
             {
                 rb.linearVelocity = forward * bulletSpeed + horizontalVelocity;
             }

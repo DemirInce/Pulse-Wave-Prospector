@@ -10,10 +10,12 @@ public class DamageEffects : MonoBehaviour
     public List<ParticleSystem> effects;
 
     private List<Transform> availablePoints;
+    private Dictionary<Transform, ParticleSystem> activeEffects;
 
     void Awake()
     {
         availablePoints = new List<Transform>(spawnPoints);
+        activeEffects = new Dictionary<Transform, ParticleSystem>();
     }
 
     public void SpawnEffect()
@@ -39,10 +41,31 @@ public class DamageEffects : MonoBehaviour
         );
 
         instance.transform.SetParent(chosenPoint, true);
+
+        activeEffects[chosenPoint] = instance;
     }
 
-    public void ResetPoints()
+    public void RemoveEffect()
     {
-        availablePoints = new List<Transform>(spawnPoints);
+        if (activeEffects.Count == 0)
+        {
+            Debug.Log("No active effects to remove.");
+            return;
+        }
+
+        var keys = new List<Transform>(activeEffects.Keys);
+        int index = Random.Range(0, keys.Count);
+        Transform point = keys[index];
+
+        ParticleSystem effect = activeEffects[point];
+
+        if (effect != null)
+        {
+            Destroy(effect.gameObject);
+        }
+
+        activeEffects.Remove(point);
+
+        availablePoints.Add(point);
     }
 }

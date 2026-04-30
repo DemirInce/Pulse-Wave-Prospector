@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 1744467875329948698}
   - component: {fileID: 6849084201224827424}
   - component: {fileID: 3926520906318665932}
+  - component: {fileID: -9179609668521194638}
   m_Layer: 0
   m_Name: HeavyEnemy
   m_TagString: Enemy
@@ -411,6 +412,23 @@ MonoBehaviour:
   health: 0
   explosionPrefab: {fileID: 5637198744257414727, guid: 3e999291ee6df40eeb61ffdffa59dbef, type: 3}
   velocity: {x: 0, y: 0, z: 0}
+--- !u!114 &-9179609668521194638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3755564099861921430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24c968581479c4762ac81aaa5d59e031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropSpawner
+  Pickups:
+  - {fileID: 2109090537653498797, guid: 984e8b8828ae144fbb8e1f02f4e618f9, type: 3}
+  - {fileID: 4778217041018487417, guid: 2119716e2da0e45f9858cfe3c8966974, type: 3}
+  DropDivider: 100
+  DropRadius: 5
 --- !u!1 &5950698833523444429
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,8 +483,10 @@ MonoBehaviour:
   - {fileID: 3678060947884924476}
   - {fileID: 1553462384709211797}
   bulletPrefab: {fileID: 8571349977848822951, guid: c0bdc470c116647a89b9d07608270aab, type: 3}
-  fireRate: 0.07
+  fireRate: 0.085
   bulletSpeed: 20
+  MaxAmmo: 100
+  ammo: 0
 --- !u!1 &6025795058180339024
 GameObject:
   m_ObjectHideFlags: 0

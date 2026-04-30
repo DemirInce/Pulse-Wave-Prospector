@@ -25,15 +25,15 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _MidPoint: 0.118
-    - _Smoothness: 0.216
+    - _MidPoint: 0.183
+    - _Smoothness: 0.24
     - _StarBrightness: 1.6
     - _StarDensity: 14
     - _StarSize: 320
     - _StarTwinkleSpeed: 0
     m_Colors:
-    - _BottomColor: {r: 0.049999982, g: 0.049999982, b: 0.09999997, a: 1}
-    - _MidColor: {r: 0.12778492, g: 0.021404423, b: 0.3490566, a: 1}
-    - _TopColor: {r: 0.003737978, g: 0.003737978, b: 0.26415092, a: 1}
+    - _BottomColor: {r: 0.0736917, g: 0.0736917, b: 0.2264151, a: 1}
+    - _MidColor: {r: 0.12095056, g: 0.054067295, b: 0.254717, a: 1}
+    - _TopColor: {r: 0.24468295, g: 0.0039215656, b: 0.2627451, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

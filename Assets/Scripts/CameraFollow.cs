@@ -13,8 +13,11 @@ public class CameraFollow : MonoBehaviour
 
     void Start()
     {
-        Transform child = transform.Find("Darkness Quad");
-        child.gameObject.SetActive(true);
+        Transform child1 = transform.Find("Darkness Quad");
+        child1.gameObject.SetActive(true);
+
+        Transform child2 = transform.Find("HUD");
+        child2.gameObject.SetActive(true);
     }
 
     void LateUpdate()

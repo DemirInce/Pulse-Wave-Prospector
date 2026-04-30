@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations;
 
 public class EnemyController : MonoBehaviour
 {
@@ -108,6 +106,7 @@ public class EnemyController : MonoBehaviour
 
         FollowPath();
         if(currentState != AIState.Attack) gun.SetFiring(false);
+        if(gun.ammo <= 0) gun.ammo = gun.MaxAmmo;
         ship.Tick();
     }
 
