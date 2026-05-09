@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 8795360307757603795}
   - component: {fileID: 503674982279556926}
   m_Layer: 0
-  m_Name: MediumEnemy
+  m_Name: MediumEnemy 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -411,7 +411,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4348154, y: 0.72, z: 0.7373062}
+  m_Size: {x: 0.4348154, y: 1, z: 0.7373062}
   m_Center: {x: 0.00000032037497, y: -0.005836375, z: -0.100140005}
 --- !u!195 &3698096433316782001
 NavMeshAgent:
@@ -460,9 +460,9 @@ MonoBehaviour:
   memoryDuration: 2
   minPatrolTime: 2
   maxPatrolTime: 5
-  orbitRadius: 25
+  orbitRadius: 50
   attackDistance: 15
-  fleeDistance: 150
+  fleeDistance: 100
 --- !u!114 &2697960305995812952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,13 +525,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipController
   acceleration: 80
   drag: 3
-  rotationSpeed: 0.5
+  rotationSpeed: 0.8
   fixedY: 0
   thrusterParticles:
   - {fileID: 6301919074747042469}
+  maxFuel: 17
+  infFuel: 0
+  fuel: 0
   maxHealth: 85
   health: 0
   explosionPrefab: {fileID: 5637198744257414727, guid: c23483937e4114add899473413dbbe40, type: 3}
+  dead: 0
+  infHealth: 0
   velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &503674982279556926
 MonoBehaviour:
@@ -548,7 +553,7 @@ MonoBehaviour:
   Pickups:
   - {fileID: 2109090537653498797, guid: 984e8b8828ae144fbb8e1f02f4e618f9, type: 3}
   - {fileID: 4778217041018487417, guid: 2119716e2da0e45f9858cfe3c8966974, type: 3}
-  DropDivider: 100
+  DropDivider: 50
   DropRadius: 5
 --- !u!1 &6729393944231772694
 GameObject:
@@ -608,6 +613,7 @@ MonoBehaviour:
   bulletSpeed: 20
   MaxAmmo: 100
   ammo: 0
+  infAmmo: 1
 --- !u!1 &8367524264987415162
 GameObject:
   m_ObjectHideFlags: 0

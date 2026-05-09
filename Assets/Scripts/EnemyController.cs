@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
         Patrol,
         Chase,
         Attack,
-        Flee
+        Flee,
     }
 
     public AIState currentState;
@@ -55,6 +55,8 @@ public class EnemyController : MonoBehaviour
 
     void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        plane = GameObject.FindGameObjectWithTag("FlightPlane")?.transform;
         agent = GetComponent<NavMeshAgent>();
         ship = GetComponent<ShipController>();
 
@@ -94,6 +96,10 @@ public class EnemyController : MonoBehaviour
             case AIState.Chase:
                 HandleChase();
                 break;
+            
+            // case AIState.BackOff:
+            //     HandleChase();
+            //     break;
 
             case AIState.Attack:
                 HandleAttack();
@@ -106,7 +112,6 @@ public class EnemyController : MonoBehaviour
 
         FollowPath();
         if(currentState != AIState.Attack) gun.SetFiring(false);
-        if(gun.ammo <= 0) gun.ammo = gun.MaxAmmo;
         ship.Tick();
     }
 
@@ -153,6 +158,7 @@ public class EnemyController : MonoBehaviour
             Vector3 dir = (transform.position - player.position).normalized;
             Vector3 target = transform.position + dir * orbitRadius;
             agent.SetDestination(target);
+//            currentState = AIState.BackOff;
             return;
         }
 
@@ -194,7 +200,7 @@ public class EnemyController : MonoBehaviour
             Vector3 disengagePoint = transform.position + away * orbitRadius;
 
             agent.SetDestination(disengagePoint);
-            currentState = AIState.Chase;
+//            currentState = AIState.BackOff;
             return;
         }
 

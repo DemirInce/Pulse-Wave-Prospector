@@ -11,6 +11,8 @@ public class Weapon : MonoBehaviour
     public int MaxAmmo = 100;
     public int ammo;
 
+    public bool infAmmo = false;
+
     private int currentNozzle = 0;
     private Coroutine firingCoroutine;
 
@@ -72,16 +74,8 @@ public class Weapon : MonoBehaviour
 
             Vector3 horizontalVelocity = new Vector3(velocity.x, 0f, velocity.z);
 
-            float forwardSpeed = Vector3.Dot(horizontalVelocity, forward);
-
-            if (forwardSpeed >= 0f)
-            {
-                rb.linearVelocity = forward * bulletSpeed + horizontalVelocity;
-            }
-            else
-            {
-                rb.linearVelocity = forward * bulletSpeed * 0.5f;
-            }
+            Vector3 speed = forward * bulletSpeed + horizontalVelocity;
+            rb.linearVelocity = speed.magnitude > bulletSpeed ? speed : forward * bulletSpeed;
         }
 
         ParticleSystem flash = nozzle.GetComponentInChildren<ParticleSystem>();
@@ -91,5 +85,6 @@ public class Weapon : MonoBehaviour
         }
 
         currentNozzle = (currentNozzle + 1) % nozzles.Length;
+        if (infAmmo) ammo = MaxAmmo;
     }
 }

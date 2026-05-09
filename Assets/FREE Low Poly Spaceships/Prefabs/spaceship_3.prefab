@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9d60806aa924ea542811db24372b42da, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ed1bdc5cf20093040b9523576fda9474, type: 2}
+      objectReference: {fileID: 2100000, guid: bace8db4836c0c541b3098ad3c90fdaa, type: 2}
     - target: {fileID: -7511558181221131132, guid: 9d60806aa924ea542811db24372b42da, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -75,7 +75,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9d60806aa924ea542811db24372b42da, type: 3}
       propertyPath: 'm_Materials.Array.data[6]'
       value: 
-      objectReference: {fileID: 2100000, guid: 90aafd50d559fa64c9e3b151d39fc1ff, type: 2}
+      objectReference: {fileID: 2100000, guid: 33cfe4c5aa7d07c40a958aa111a1da79, type: 2}
     - target: {fileID: 919132149155446097, guid: 9d60806aa924ea542811db24372b42da, type: 3}
       propertyPath: m_Name
       value: spaceship_3

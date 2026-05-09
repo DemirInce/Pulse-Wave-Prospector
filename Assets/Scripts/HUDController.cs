@@ -27,10 +27,10 @@ public class HUDController : MonoBehaviour
         Transform playerRoot = player.transform.root;
         Weapon gun = playerRoot.GetComponentInChildren<Weapon>();
         
-        int value = (int)(((float)gun.ammo / gun.MaxAmmo) * 17);
-        if (value == 0 && gun.ammo != 0) value = 1;
-        ammoSlider.value = value;
+        int ammo_value = (int)(((float)gun.ammo / gun.MaxAmmo) * 17);
+        if (ammo_value == 0 && gun.ammo != 0) ammo_value = 1;
+        ammoSlider.value = ammo_value;
 
-        // TODO: Do Fuel
+        fuelSlider.value = player.fuel;
     }
 }

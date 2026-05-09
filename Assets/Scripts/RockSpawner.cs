@@ -20,10 +20,10 @@ public class RockSpawner : MonoBehaviour
     [Header("Spacing")]
     public float extraSpacing = 0.2f;
 
-    private List<Vector3> placedPositions = new List<Vector3>();
-    private List<float> placedRadii = new List<float>();
+    public List<Vector3> placedPositions = new List<Vector3>();
+    public List<float> placedRadii = new List<float>();
 
-    void Start()
+    void Awake()
     {
         SpawnRocks();
     }
@@ -77,14 +77,18 @@ public class RockSpawner : MonoBehaviour
 
                 obstacle.radius = radius / 2f;
                 obstacle.height = radius;
+
             }
 
+            rock.SetActive(false);
+
+            GameManager.Instance.RegisterAsteroid(spawnPos, radius, rock);
             placedPositions.Add(spawnPos);
             placedRadii.Add(radius);
         }
     }
 
-    bool IsValidPosition(Vector3 pos, float radius)
+    public bool IsValidPosition(Vector3 pos, float radius)
     {
         for (int i = 0; i < placedPositions.Count; i++)
         {
@@ -95,7 +99,7 @@ public class RockSpawner : MonoBehaviour
         return true;
     }
 
-    float GetPrefabRadius(GameObject prefab)
+    public float GetPrefabRadius(GameObject prefab)
     {
         Renderer rend = prefab.GetComponentInChildren<Renderer>();
         if (rend == null)
@@ -104,7 +108,7 @@ public class RockSpawner : MonoBehaviour
         return rend.bounds.extents.magnitude;
     }
 
-    Vector3 GetRandomPointOnPlane()
+    public Vector3 GetRandomPointOnPlane()
     {
         float width = plane.localScale.x * 10f;
         float length = plane.localScale.z * 10f;

@@ -44768,6 +44768,7 @@ MonoBehaviour:
   bulletSpeed: 20
   MaxAmmo: 100
   ammo: 0
+  infAmmo: 1
 --- !u!1 &8627030586328036544
 GameObject:
   m_ObjectHideFlags: 0
@@ -54722,7 +54723,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.7285898, y: 0.81, z: 0.52}
+  m_Size: {x: 0.7285898, y: 1, z: 0.52}
   m_Center: {x: 0.0000018179417, y: 0.000744164, z: 0.00522656}
 --- !u!195 &1218049450206280027
 NavMeshAgent:
@@ -54771,9 +54772,9 @@ MonoBehaviour:
   memoryDuration: 2
   minPatrolTime: 2
   maxPatrolTime: 5
-  orbitRadius: 25
+  orbitRadius: 50
   attackDistance: 15
-  fleeDistance: 150
+  fleeDistance: 100
 --- !u!143 &4127614350488166514
 CharacterController:
   m_ObjectHideFlags: 0
@@ -54813,13 +54814,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipController
   acceleration: 90
   drag: 3
-  rotationSpeed: 0.5
+  rotationSpeed: 0.8
   fixedY: 0
   thrusterParticles:
   - {fileID: 6331979259847697854}
+  maxFuel: 17
+  infFuel: 0
+  fuel: 0
   maxHealth: 60
   health: 0
   explosionPrefab: {fileID: 5637198744257414727, guid: c23483937e4114add899473413dbbe40, type: 3}
+  dead: 0
+  infHealth: 0
   velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &1209101379217346646
 MonoBehaviour:

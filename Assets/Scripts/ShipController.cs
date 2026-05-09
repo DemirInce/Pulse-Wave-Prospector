@@ -11,13 +11,16 @@ public class ShipController : MonoBehaviour
 
     [Header("Thruster")]
     public ParticleSystem[] thrusterParticles;
+    public int maxFuel = 17;
+    public bool infFuel = false;
+    public int fuel;
 
     [Header("Health")]
     public float maxHealth = 100f;
     public float health;
     public ParticleSystem explosionPrefab;
-
-    private bool isDead = false;
+    public bool dead = false;
+    public bool infHealth = false;
 
     private int nextThresholdIndex = 0;
     private float[] thresholds;
@@ -38,6 +41,7 @@ public class ShipController : MonoBehaviour
         spawner = GetComponent<DropSpawner>();
 
         health = maxHealth;
+        fuel = maxFuel;
 
         thresholds = new float[5];
         for (int i = 0; i < 5; i++)
@@ -121,17 +125,17 @@ public class ShipController : MonoBehaviour
         ManageEffects();
 
         if (velocity.sqrMagnitude < 0.1 * 0.1) velocity = Vector3.zero;
+        if (infFuel) fuel = maxFuel;
+        if (infHealth) health = maxHealth;
     }
 
     // ---------------- DAMAGE ----------------
 
     public void TakeDamage(float damage)
     {
-        if (isDead) return;
-
         health -= damage;
 
-        if (health <= 0f)
+        if (health <= 0f && !dead)
         {
             Die();
         }
@@ -160,13 +164,11 @@ public class ShipController : MonoBehaviour
 
     private void Die()
     {
-        isDead = true;
-
+        dead = true;
         if (explosionPrefab != null)
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
-        spawner.SpawnDrops(maxHealth);
-
-        Destroy(gameObject);
+        spawner?.SpawnDrops(maxHealth);
+        gameObject.SetActive(false);
     }
 }

@@ -27,14 +27,15 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Border"))
+        if (!other) return;
+        if (!other.CompareTag("Player") && !other.CompareTag("Rock") && !other.CompareTag("Enemy") && !other.CompareTag("Box"))
             return;
         if (timeAlive < 0.03f || (timeAlive < 0.1f && other.CompareTag("Player")))
             return;
         if (other.CompareTag("Enemy") || other.CompareTag("Player"))
         {
             ShipController ship = other.GetComponentInParent<ShipController>();
-            ship.TakeDamage(damage);
+            ship?.TakeDamage(damage);
         }
         Explode(); 
     }

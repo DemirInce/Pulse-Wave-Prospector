@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 0dd2237478f9e414bbe2ae10ef2ea262
+AssetOrigin:
+  serializedVersion: 1
+  productId: 341192
+  packageName: Ultimate Low Poly Asteroid and Ore Pack
+  packageVersion: 1.0
+  assetPath: Assets/Ultimate Asteroids And Ores Pack/Meshes/Ore/StoneOre (56).fbx
+  uploadId: 809034
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -30,7 +37,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -108,10 +115,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 341192
-  packageName: Ultimate Low Poly Asteroid and Ore Pack
-  packageVersion: 1.0
-  assetPath: Assets/Ultimate Asteroids And Ores Pack/Meshes/Ore/StoneOre (56).fbx
-  uploadId: 809034

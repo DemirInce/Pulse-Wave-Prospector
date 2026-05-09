@@ -4886,7 +4886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthPickup
   value: 20
-  lifetime: 60
+  lifetime: 30
   healthEffect: {fileID: 219633767274959967, guid: d0a342fbba98e471a817f8a7e7b7912e, type: 3}
 --- !u!1 &4514492898118139733
 GameObject:

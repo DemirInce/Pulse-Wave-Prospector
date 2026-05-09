@@ -4865,7 +4865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AmmoPickup
   value: 30
-  lifetime: 60
+  lifetime: 30
   ammoEffect: {fileID: 5936877081210842786, guid: 00a2c678258d04f3bb7e975e4e1fc704, type: 3}
 --- !u!65 &3680306467688057020
 BoxCollider:
