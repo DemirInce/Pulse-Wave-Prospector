@@ -6,7 +6,7 @@ public class RockController : MonoBehaviour
     public float minSpinRate = 2f;
     public float maxSpinRate = 9f;
 
-    private float spinRate;
+    public float spinRate;
     private Vector3 spinAxis;
 
     void Start()

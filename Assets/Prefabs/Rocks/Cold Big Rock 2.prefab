@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3980225375134748031}
   - component: {fileID: 552790973459112070}
   - component: {fileID: -3880166033207516454}
+  - component: {fileID: 3858962080660726183}
   m_Layer: 0
   m_Name: Cold Big Rock 2
   m_TagString: Rock
@@ -128,3 +129,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+--- !u!208 &3858962080660726183
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131844951013731581}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 3, y: 2.769, z: 3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0.102000006, y: -0.047000002, z: -0.009000001}
+  m_TimeToStationary: 0.5

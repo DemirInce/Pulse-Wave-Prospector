@@ -11,7 +11,7 @@ Tags { "RenderType"="Opaque" "Queue"="Geometry-1" }
 
         Stencil
         {
-            Ref 1
+            Ref 5
             Comp Always
             Pass Replace
         }

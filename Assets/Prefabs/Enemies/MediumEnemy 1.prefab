@@ -551,8 +551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropSpawner
   Pickups:
-  - {fileID: 2109090537653498797, guid: 984e8b8828ae144fbb8e1f02f4e618f9, type: 3}
-  - {fileID: 4778217041018487417, guid: 2119716e2da0e45f9858cfe3c8966974, type: 3}
+  - {fileID: 3554020537737433398, guid: 2db08173aad4948b39339563bd2e12d2, type: 3}
   DropDivider: 50
   DropRadius: 5
 --- !u!1 &6729393944231772694

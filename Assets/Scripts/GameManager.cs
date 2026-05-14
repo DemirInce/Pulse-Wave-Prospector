@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 using Unity.AI.Navigation;
+using TMPro;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,6 +36,9 @@ public class GameManager : MonoBehaviour
         public List<GameObject> enemies = new List<GameObject>();
         public List<GameObject> objects = new List<GameObject>();
 
+        public bool target = false;
+        public Vector2 targetCoords;
+
         public Area(int x, int y, int diff)
         {
             x_cord = x;
@@ -48,26 +53,70 @@ public class GameManager : MonoBehaviour
     public GameObject areaPrefab;
 
     public MiniMapRenderer minimap;
-    private EnemySpawner spawner;
+    public GridController grid;
+    public Vector2 highlightedArea = new Vector2(0,0);
+    private EnemySpawner enemySpawner;
     private TargetSpawner targetSpawner;
+
+    private GameObject target;
+    private int target_count = 0;
+
+    public float fadeSpeed = 20f;
+    public GameObject portalPrefab;
+
+    private GameObject startPortal = null;
+
+    public List<GameObject> PickUps = new List<GameObject>();
+
+    public GameObject pauseMenu;
+    public bool paused = false;
+
+    private PlayerControls inputActions;
+    void OnEnable()
+    {
+        inputActions.Player.Enable();
+    }
+
+    void OnDisable()
+    {
+        inputActions.Player.Disable();
+    }
 
     void Awake()
     {
+        inputActions = new PlayerControls();
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-        spawner = GetComponent<EnemySpawner>();
+        enemySpawner = GetComponent<EnemySpawner>();
         targetSpawner = GetComponent<TargetSpawner>();
     }
 
     void Start()
     {
         InitializeGrid();
-        ActivateOnly(0,0);
+        StartGame();
+    }
+
+    void Update()
+    {
+        if (inputActions.Player.Pause.WasPressedThisFrame())
+        {
+            if (!paused)
+            {
+                Pause();
+            } else {
+                UnPause();
+            }
+        }
     }
 
     void InitializeGrid()
     {
         Sector = new List<List<Area>>();
+        int targetX = Random.Range(0, 4);
+        int targetY = Random.Range(0, 4);
+
+        Vector2 startCoord = FindFarthestArea(targetX, targetY);
 
         for (int x = 0; x < 4; x++)
         {
@@ -76,32 +125,72 @@ public class GameManager : MonoBehaviour
             for (int y = 0; y < 4; y++)
             {
                 Area newArea = new Area(x, y, 0);
-                currArea = newArea;
 
-                GameObject areaObj = Instantiate(areaPrefab, new Vector3(0f,0f,0f), Quaternion.identity);
+                GameObject areaObj = Instantiate(areaPrefab, Vector3.zero, Quaternion.identity);
                 newArea.area = areaObj;
 
-                spawner.SpawnEnemies(newArea);
+                AreaController areaController = areaObj.GetComponent<AreaController>();
 
-                targetSpawner.SpawnTarget(newArea.asteroids);
+                areaController.backgroundRocks.SpawnRocks(newArea);
+                areaController.flightRocks.SpawnRocks(newArea);
+                areaController.foregrounfRocks.SpawnRocks(newArea);
 
-                areaObj.SetActive(x == 0 && y == 0);
+                if (x == targetX && y == targetY)
+                {
+                    TargetSpawner.Return r = targetSpawner.SpawnTarget(newArea.asteroids, newArea);
+                    target = r.target;
+                    target_count = r.num;
+                    newArea.target = true;
+                    newArea.targetCoords = r.coords;
+                } 
+
+                if (!(x == startCoord.x && y == startCoord.y))
+                {
+                    areaController.objectSpawner.SpawnObjects(newArea);
+                    enemySpawner.SpawnEnemies(newArea);        
+                }
+
+                areaObj.SetActive(false);
 
                 row.Add(newArea);
             }
 
             Sector.Add(row);
         }
+
+        ActivateOnly((int)startCoord.x, (int)startCoord.y);
+
+        Vector3 portalPos = new Vector3(player.position.x, -3.5f, player.position.z + 10f);
+        Vector3 portalRot = new Vector3(0f, 90f, 0f);
+        PortalController portal = Instantiate(portalPrefab, portalPos, Quaternion.Euler(portalRot)).GetComponent<PortalController>(); 
+        portal.disabled = true;
+        portal.player = player;
+        startPortal = portal.gameObject;
     }
 
     public void ActivateOnly(int x, int y)
     {
-        foreach (AsteroidData asteroid in currArea.asteroids)
+        if (currArea != null)
         {
-            asteroid.rock.SetActive(false);
+            foreach (AsteroidData asteroid in currArea.asteroids)
+            {
+                asteroid.rock.SetActive(false);
+            }
+            currArea.enemies = CullNullObjects(currArea.enemies);
+            currArea.objects = CullNullObjects(currArea.objects);
         }
-        currArea.enemies = CullNullObjects(currArea.enemies);
-        currArea.objects = CullNullObjects(currArea.objects);
+
+        foreach (GameObject pickup in PickUps)
+        {
+            Destroy(pickup);
+        }
+        PickUps.Clear();
+
+        if (startPortal != null)
+        {
+            Destroy(startPortal);
+            startPortal = null;
+        }
 
         for (int i = 0; i < 4; i++)
         {
@@ -121,7 +210,7 @@ public class GameManager : MonoBehaviour
         }
         foreach (GameObject enemy in currArea.enemies)
         {
-            enemy.SetActive(true);
+            if (!enemy.GetComponent<ShipController>().dead) enemy.SetActive(true);
         }
         foreach (GameObject obj in currArea.objects)
         {
@@ -133,7 +222,7 @@ public class GameManager : MonoBehaviour
         List<AsteroidData> filteredAsteroids = new();
         foreach (var asteroid in currArea.asteroids)
         {
-            if (asteroid.rock.layer == 6)
+            if (asteroid.rock.layer == 6 || asteroid.rock.layer == 12)
             {
                 filteredAsteroids.Add(asteroid);
             }
@@ -143,17 +232,13 @@ public class GameManager : MonoBehaviour
         minimap.enemies = currArea.enemies;
         minimap.objects = currArea.objects;
 
+        highlightedArea = new Vector2(x, y);
         GridController grid = minimap.GetComponentInChildren<GridController>();
         grid.ResetHighlights();
-        grid.HighlightSquare(x,y);
+        grid.HighlightSquare();
 
         NavMeshSurface surface = currArea.area.GetComponentInChildren<NavMeshSurface>();
         surface.BuildNavMesh();
-    }
-
-    public void RegisterAsteroid(Vector3 pos, float radius, GameObject rock)
-    {
-        currArea.asteroids.Add(new AsteroidData(pos, radius, rock));
     }
 
     List<GameObject> CullNullObjects(List<GameObject> objects)
@@ -171,5 +256,126 @@ public class GameManager : MonoBehaviour
             }
         }
         return newObjects;
+    }
+
+    Vector2 FindFarthestArea(int targetX, int targetY)
+    {
+        Vector2 farthest = new Vector2();
+        int maxDistance = -1;
+
+        for (int x = 0; x < 4; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                int distance = Mathf.Abs(x - targetX) + Mathf.Abs(y - targetY);
+
+                if (distance > maxDistance)
+                {
+                    maxDistance = distance;
+                    farthest.x = x;
+                    farthest.y = y;
+                }
+            }
+        }
+        return farthest;
+    }
+
+    public void UpdateTargets()
+    {
+        target_count -= 1;
+
+        minimap.Clear();
+        List<AsteroidData> filteredAsteroids = new();
+        foreach (var asteroid in currArea.asteroids)
+        {
+            if (asteroid.rock.layer == 6 || asteroid.rock.layer == 12)
+            {
+                filteredAsteroids.Add(asteroid);
+            }
+        }
+        minimap.DrawRocks(filteredAsteroids);  
+
+        if (target_count <= 0)
+        {
+            target.SetActive(false);
+            DeployExit();
+        }
+    }
+
+    private void DeployExit()
+    {
+        List<Area> validAreas = new List<Area>();
+
+        for (int x = 0; x < 4; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                Area area = Sector[x][y];
+
+                if (area == currArea)
+                    continue;
+
+                foreach (GameObject enemy in area.enemies)
+                {
+                    if (enemy != null)
+                        enemy.GetComponent<ShipController>().dead = true;
+                }
+
+                enemySpawner.SpawnEnemies(area);
+
+                int distance = Mathf.Abs(area.x_cord - currArea.x_cord) + Mathf.Abs(area.y_cord - currArea.y_cord);
+                if (distance == 2) validAreas.Add(area);
+            }
+        }
+
+        if (validAreas.Count == 0)
+            return;
+
+        Area portalArea = validAreas[Random.Range(0, validAreas.Count)];
+
+        Vector3 portalPos = new Vector3(0f, -3.5f, 0f);
+        Vector3 portalRot = new Vector3(0f, 90f, 0f);
+        PortalController portal = Instantiate(portalPrefab, portalPos, Quaternion.Euler(portalRot)).GetComponent<PortalController>();
+
+        portal.disabled = false;
+        portal.player = player;
+
+        portalArea.objects.Add(portal.gameObject);
+
+        if (portalArea != currArea) portal.gameObject.SetActive(false);
+
+        grid.SetPortal(portalArea.x_cord, portalArea.y_cord);
+        minimap.SetPortalCoords(new Vector2(portalArea.x_cord, portalArea.y_cord));
+    }
+
+    public void StartGame()
+    {
+        PlayerController playerController = player.GetComponentInParent<PlayerController>();
+        playerController.Startup(fadeSpeed);        
+    }
+
+    public void FinishGame()
+    {
+        minimap.gameObject.SetActive(false);
+        PlayerController playerController = player.GetComponentInParent<PlayerController>();
+        playerController.Shutdown(fadeSpeed);
+    }
+
+    public void Pause()
+    {
+        paused = true;
+        Time.timeScale = 0f;
+        PlayerController playerController = player.GetComponentInParent<PlayerController>();
+        if (playerController != null) playerController.enabled = false;
+        pauseMenu.SetActive(true);
+    }
+
+    public void UnPause()
+    {
+        paused = false;
+        Time.timeScale = 1f;
+        PlayerController playerController = player.GetComponentInParent<PlayerController>();
+        if (playerController != null) playerController.enabled = true;
+        pauseMenu.SetActive(false);
     }
 }

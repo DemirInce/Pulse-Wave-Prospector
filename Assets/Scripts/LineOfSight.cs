@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class FieldOfSight : MonoBehaviour {
+public class LineOfSight : MonoBehaviour {
 
 	public float viewRadius;
 	public float viewAngle = 360;

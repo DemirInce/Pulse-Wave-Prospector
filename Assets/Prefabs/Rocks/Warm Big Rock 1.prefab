@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5180406152084556177}
   - component: {fileID: -7445781168414966531}
   - component: {fileID: 1998402915949761852}
+  - component: {fileID: 1360547501917576125}
   m_Layer: 0
   m_Name: Warm Big Rock 1
   m_TagString: Rock
@@ -127,3 +128,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+--- !u!208 &1360547501917576125
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8568531494261360191}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 3, y: 2.769, z: 3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0.028, y: 0.085, z: -0.007}
+  m_TimeToStationary: 0.5

@@ -18,7 +18,8 @@ public class DropSpawner : MonoBehaviour
             Vector2 offset = Random.insideUnitCircle * DropRadius;
             Vector3 spawnPos = transform.position + new Vector3(offset.x, 0f, offset.y);
 
-            Instantiate(prefab, spawnPos, Quaternion.identity);
+            GameObject pickup = Instantiate(prefab, spawnPos, Quaternion.identity);
+            GameManager.Instance.PickUps.Add(pickup);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +7,10 @@ public class MiniMapRenderer : MonoBehaviour
     public RectTransform mapArea;
     public GameObject rockDot;
     public GameObject shipDot;
+    public GameObject portalDot;
+
+    private int portalCoords_x = 4;
+    private int portalCoords_y = 4;
 
     [Header("World Mapping")]
     public Transform mapOrigin;
@@ -21,9 +24,22 @@ public class MiniMapRenderer : MonoBehaviour
 
     public void DrawRocks(List<GameManager.AsteroidData> asteroids)
     {
-        foreach (var asteroid in asteroids) { 
-            CreateDot(WorldToMap(asteroid.position), Color.gray, rockDot, scale: asteroid.radius*0.2f); 
-        }     
+        foreach (var asteroid in asteroids) {
+            if (asteroid.rock.layer == 6)
+            {
+                CreateDot(WorldToMap(asteroid.position), Color.gray, rockDot, scale: asteroid.radius*0.2f); 
+            } else if (asteroid.rock.layer == 12)
+            {
+                Color targetColor = asteroid.rock.GetComponent<TargetController>().targetColor;
+                CreateDot(WorldToMap(asteroid.position), targetColor, rockDot, scale: asteroid.radius*0.2f);                 
+            }
+        }  
+
+        GameManager.Area area = GameManager.Instance.currArea;
+        if (area.x_cord == portalCoords_x && area.y_cord == portalCoords_y)
+        {
+            CreateDot(WorldToMap(new Vector3(0,0,0)), portalDot.GetComponent<Image>().color, portalDot, scale:2);                 
+        }
     }
     
     public void UpdateScan(Vector3 playerPos)
@@ -114,5 +130,11 @@ public class MiniMapRenderer : MonoBehaviour
             Destroy(d);
 
         dots.Clear();
+    }
+
+    public void SetPortalCoords(Vector2 coords)
+    {
+        portalCoords_x = (int)coords.x;
+        portalCoords_y = (int)coords.y;
     }
 }

@@ -14942,6 +14942,7 @@ MonoBehaviour:
   bulletSpeed: 20
   MaxAmmo: 100
   ammo: 0
+  infAmmo: 0
 --- !u!1 &1310665492772648772
 GameObject:
   m_ObjectHideFlags: 0
@@ -44883,6 +44884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4102c44cd70d34015b662b43a96b91cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipMovement
+  interactDistance: 7
   gun: {fileID: 1600935261023676988}
   deadZone: 1
 --- !u!143 &6922565524519950324
@@ -44922,7 +44924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f97063dfd2514f07b44c21955a19aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FieldOfSight
-  viewRadius: 40
+  viewRadius: 0
   viewAngle: 360
   obstacleMask:
     serializedVersion: 2
@@ -44978,6 +44980,7 @@ MonoBehaviour:
   health: 0
   explosionPrefab: {fileID: 5637198744257414727, guid: c23483937e4114add899473413dbbe40, type: 3}
   dead: 0
+  infHealth: 0
   velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &-6886902712192385592
 MonoBehaviour:
@@ -45015,8 +45018,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PulseScan
   minimap: {fileID: 0}
-  scanEffect: {fileID: 0}
-  cooldownTime: 5
+  heatmap: {fileID: 0}
+  scanEffect: {fileID: 959753950705105033}
+  cooldownTime: 7
   energyBar: {fileID: 0}
 --- !u!1 &5000797899974354182
 GameObject:
@@ -94586,6 +94590,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4535230836938939685, guid: 6412fd06cf84f4fd7b95de716a2aaec2, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4535230836938939685, guid: 6412fd06cf84f4fd7b95de716a2aaec2, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -94594,5 +94606,10 @@ PrefabInstance:
 --- !u!4 &945636841898501904 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4521131316557333180, guid: 6412fd06cf84f4fd7b95de716a2aaec2, type: 3}
+  m_PrefabInstance: {fileID: 3720495873590470060}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &959753950705105033 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4535230836938939685, guid: 6412fd06cf84f4fd7b95de716a2aaec2, type: 3}
   m_PrefabInstance: {fileID: 3720495873590470060}
   m_PrefabAsset: {fileID: 0}

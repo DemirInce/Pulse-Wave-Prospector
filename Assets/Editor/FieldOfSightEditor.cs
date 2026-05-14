@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
-[CustomEditor (typeof (FieldOfSight))]
+[CustomEditor (typeof (LineOfSight))]
 public class FieldOfSightEditor : Editor {
 
 	void OnSceneGUI() {
-		FieldOfSight fow = (FieldOfSight)target;
+		LineOfSight fow = (LineOfSight)target;
 		Handles.color = Color.white;
 		Handles.DrawWireArc (fow.transform.position, Vector3.up, Vector3.forward, 360, fow.viewRadius);
 		Vector3 viewAngleA = fow.DirFromAngle (-fow.viewAngle / 2, false);

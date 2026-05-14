@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6240225542677824251}
   - component: {fileID: -332924408941965282}
   - component: {fileID: 6577455722072733013}
+  - component: {fileID: -5660255013125639522}
   m_Layer: 0
   m_Name: Diamond Ore 1
   m_TagString: Rock
@@ -128,3 +129,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+--- !u!208 &-5660255013125639522
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2797913412085689047}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 3, y: 2.769, z: 3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: -0.123, y: -0.060000002, z: 0.157}
+  m_TimeToStationary: 0.5

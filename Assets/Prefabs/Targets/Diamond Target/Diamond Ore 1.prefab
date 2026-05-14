@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9175643548916061803}
   - component: {fileID: 2465730481135882015}
   - component: {fileID: 3717396273797303392}
+  - component: {fileID: -9029498154229612673}
   m_Layer: 0
   m_Name: Diamond Ore 1
   m_TagString: Rock
@@ -128,3 +129,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+  spinRate: 0
+--- !u!114 &-9029498154229612673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8126271625803076172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e086a87b32d648a5969f9ba55bc376a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetController
+  targetColor: {r: 0, g: 0.41568628, b: 0.6431373, a: 1}
+  rocketPrefab: {fileID: 1093844046396689803, guid: 141b45f4cdcf04b98a2e67b6bf2d9f7a, type: 3}
+  launchSpeed: 20
+  acceleration: 4
+  lifetime: 6
+  surfaceOffset: 0.5
+  attachDelay: 0.5
+  shakeAmount: 0.08
+  shakeSpeed: 25

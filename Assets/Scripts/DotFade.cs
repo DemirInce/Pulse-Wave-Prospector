@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class DotFade : MonoBehaviour
 {
-    public float lifetime = 5f;
+    public float lifetime = 7f;
 
     private float timer;
     private Image img;

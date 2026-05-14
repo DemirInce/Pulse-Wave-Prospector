@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 9021489808210524732}
   - component: {fileID: 3572473024593965046}
   - component: {fileID: -8883494585853243893}
+  - component: {fileID: -213102769298535484}
   m_Layer: 0
   m_Name: Silver Ore 2
-  m_TagString: Untagged
+  m_TagString: Rock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,3 +129,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+  spinRate: 0
+--- !u!114 &-213102769298535484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8892560920824394788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e086a87b32d648a5969f9ba55bc376a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetController
+  targetColor: {r: 0.39215687, g: 0.45490196, b: 0.58431375, a: 1}
+  rocketPrefab: {fileID: 1093844046396689803, guid: 141b45f4cdcf04b98a2e67b6bf2d9f7a, type: 3}
+  launchSpeed: 20
+  acceleration: 4
+  lifetime: 6
+  surfaceOffset: 0.5
+  attachDelay: 0.5
+  shakeAmount: 0.08
+  shakeSpeed: 25

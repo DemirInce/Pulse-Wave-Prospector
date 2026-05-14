@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 186366226035277007}
   - component: {fileID: -1599372220522120756}
   - component: {fileID: 6425907511602340134}
+  - component: {fileID: -8588280346265914314}
   m_Layer: 0
   m_Name: Gray Small Rock 2
   m_TagString: Rock
@@ -127,3 +128,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+--- !u!208 &-8588280346265914314
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3192525498078241685}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 3, y: 2.769, z: 3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: -0.098000005, y: -0.013, z: 0.026}
+  m_TimeToStationary: 0.5

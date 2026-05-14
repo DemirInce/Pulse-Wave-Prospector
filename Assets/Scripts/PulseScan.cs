@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class PulseScan : MonoBehaviour
 {
     private PlayerControls inputActions;
     public MiniMapRenderer minimap;
+    public Heatmap heatmap;
     public ParticleSystem scanEffect;
 
-    public float cooldownTime = 5f;
+    public float cooldownTime = 7f;
     private float cooldownTimer;
 
     public GameObject energyBar;
@@ -23,6 +25,11 @@ public class PulseScan : MonoBehaviour
     void OnEnable()
     {
         inputActions.Player.Enable();
+    }
+
+    void OnDisable()
+    {
+        inputActions.Player.Disable();
     }
 
     void Update()
@@ -63,6 +70,9 @@ public class PulseScan : MonoBehaviour
             scanEffect.Play();
             player.fuel -= 1;
             cooldownTimer = 0f;
+
+            var gm = GameManager.Instance;
+            heatmap.GenerateAndDisplayHeatmap(gm.Sector, gm.currArea);
         }
     }
 }

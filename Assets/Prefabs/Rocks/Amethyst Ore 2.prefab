@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1420817315796685883}
   - component: {fileID: 810799016018054939}
   - component: {fileID: 67794211249869703}
+  - component: {fileID: 7326259293505559490}
   m_Layer: 0
   m_Name: Amethyst Ore 2
   m_TagString: Rock
@@ -128,3 +129,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+--- !u!208 &7326259293505559490
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6802718978446673546}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 3, y: 2.769, z: 3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0.094000004, y: -0.05, z: -0.11400001}
+  m_TimeToStationary: 0.5

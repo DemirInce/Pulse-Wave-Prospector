@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 using System.Collections.Generic;
 
 public class RockSpawner : MonoBehaviour
@@ -20,15 +19,14 @@ public class RockSpawner : MonoBehaviour
     [Header("Spacing")]
     public float extraSpacing = 0.2f;
 
+    [Header("Blocked Spawn Area")]
+    public Vector2 blockedXRange = new Vector2(-15f, 15f);
+    public Vector2 blockedZRange = new Vector2(-15f, 15f);
+
     public List<Vector3> placedPositions = new List<Vector3>();
     public List<float> placedRadii = new List<float>();
 
-    void Awake()
-    {
-        SpawnRocks();
-    }
-
-    void SpawnRocks()
+    public void SpawnRocks(GameManager.Area area)
     {
         if (plane == null || rockPrefabs.Length == 0)
         {
@@ -68,21 +66,12 @@ public class RockSpawner : MonoBehaviour
             rock.transform.localScale *= scale;
             rock.layer = Layer;
 
-            if (Layer == 6)
+            if (area != null)
             {
-                NavMeshObstacle obstacle = rock.AddComponent<NavMeshObstacle>();
-                obstacle.carving = true;
-
-                obstacle.shape = NavMeshObstacleShape.Capsule;
-
-                obstacle.radius = radius / 2f;
-                obstacle.height = radius;
-
+                rock.SetActive(false);
+                area.asteroids.Add(new GameManager.AsteroidData(spawnPos, radius, rock));
             }
 
-            rock.SetActive(false);
-
-            GameManager.Instance.RegisterAsteroid(spawnPos, radius, rock);
             placedPositions.Add(spawnPos);
             placedRadii.Add(radius);
         }
@@ -96,7 +85,7 @@ public class RockSpawner : MonoBehaviour
             if (dist < (radius + placedRadii[i]))
                 return false;
         }
-        return true;
+        return !IsInsideBlockedArea(pos);
     }
 
     public float GetPrefabRadius(GameObject prefab)
@@ -119,5 +108,13 @@ public class RockSpawner : MonoBehaviour
         Vector3 center = plane.position;
 
         return new Vector3(center.x + x, center.y, center.z + z);
+    }
+
+    bool IsInsideBlockedArea(Vector3 pos)
+    {
+        return pos.x >= blockedXRange.x &&
+               pos.x <= blockedXRange.y &&
+               pos.z >= blockedZRange.x &&
+               pos.z <= blockedZRange.y;
     }
 }

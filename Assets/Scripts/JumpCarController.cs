@@ -22,8 +22,6 @@ public class JumpCarController : MonoBehaviour
 
     private PlayerControls inputActions;
 
-    private MiniMapRenderer miniMap;
-
     void Awake()
     {
         inputActions = new PlayerControls();
@@ -34,12 +32,16 @@ public class JumpCarController : MonoBehaviour
         inputActions.Player.Enable();
     }
 
+    void OnDisable()
+    {
+        inputActions.Player.Disable();
+    }
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         ship = player.GetComponentInParent<ShipController>();
         ps = GetComponentInChildren<ParticleSystem>();
-        miniMap = FindAnyObjectByType<MiniMapRenderer>();
     }
 
     void Update()

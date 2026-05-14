@@ -10,17 +10,16 @@ public class ObjectSpawner : MonoBehaviour
     public int Count = 50;
 
     [Header("Spacing")]
-    public float extraSpacing = 1f;
+    public float minimumObjectDistance = 80f;
 
     private RockSpawner rockSpawner;
 
     void Awake()
     {
         rockSpawner = GetComponent<RockSpawner>();
-        SpawnObjects();
     }
 
-    void SpawnObjects()
+    public void SpawnObjects(GameManager.Area area)
     {
         if (plane == null || objectPrefabs.Length == 0)
         {
@@ -41,10 +40,11 @@ public class ObjectSpawner : MonoBehaviour
             do
             {
                 spawnPos = rockSpawner.GetRandomPointOnPlane();
-                radius = rockSpawner.GetPrefabRadius(prefab) + extraSpacing;
+                radius = rockSpawner.GetPrefabRadius(prefab) + 10;
+
                 attempts++;
             }
-            while (!rockSpawner.IsValidPosition(spawnPos, radius) && attempts < maxAttempts);
+            while (!IsValidPosition(area, spawnPos, radius) && attempts < maxAttempts);
 
             if (attempts >= maxAttempts)
                 continue;
@@ -52,12 +52,41 @@ public class ObjectSpawner : MonoBehaviour
             GameObject obj = Instantiate(prefab, spawnPos, Quaternion.identity);
 
             obj.SetActive(false);
-
-            var gm = GameManager.Instance;
-            gm.currArea.objects.Add(obj);
-
-            rockSpawner.placedPositions.Add(spawnPos);
-            rockSpawner.placedRadii.Add(radius);
+            area.objects.Add(obj);
         }
+    }
+
+    bool IsValidPosition(GameManager.Area area, Vector3 position, float radius)
+    {
+        foreach (var asteroid in area.asteroids)
+        {
+            float dist = Vector3.Distance(position, asteroid.position);
+
+            if (dist < radius + asteroid.radius)
+                return false;
+        }
+
+        foreach (GameObject obj in area.objects)
+        {
+            if (obj == null)
+                continue;
+
+            Collider col = obj.GetComponentInChildren<Collider>();
+
+            float objRadius = 0f;
+
+            if (col != null)
+                objRadius = col.bounds.extents.magnitude;
+
+            float dist = Vector3.Distance(position, obj.transform.position);
+
+            if (dist < radius + objRadius)
+                return false;
+
+            if (dist < minimumObjectDistance)
+                return false;
+        }
+
+        return true;
     }
 }

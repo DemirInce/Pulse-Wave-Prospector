@@ -50,8 +50,6 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    // ---------------- MOVEMENT ----------------
-
     public void ApplyThrust(float thrust)
     {
         currentThrust = thrust;
@@ -128,8 +126,6 @@ public class ShipController : MonoBehaviour
         if (infFuel) fuel = maxFuel;
         if (infHealth) health = maxHealth;
     }
-
-    // ---------------- DAMAGE ----------------
 
     public void TakeDamage(float damage)
     {

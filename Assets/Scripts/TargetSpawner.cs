@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine.AI;
 using UnityEngine;
 
 public class TargetSpawner : MonoBehaviour
@@ -9,6 +8,8 @@ public class TargetSpawner : MonoBehaviour
     {
         public string colorName;
         public GameObject[] prefabs;
+        public GameObject targetNavMeshObstaclePrefab;
+        public Material Skybox;
     }
 
     [Header("Target Variants")]
@@ -21,16 +22,25 @@ public class TargetSpawner : MonoBehaviour
 
     [Header("Placement")]
     public LayerMask asteroidLayer = 6;
+    public int layer; 
     public float minScale = 0.8f;
     public float maxScale = 1.5f;
 
     [Header("Spacing")]
     public float extraSpacing = 1f;
 
-    public void SpawnTarget(List<GameManager.AsteroidData> asteroids)
+    public class Return
     {
+        public GameObject target;
+        public Vector2 coords;
+        public int num;
+    }
+
+    public Return SpawnTarget(List<GameManager.AsteroidData> asteroids, GameManager.Area area)
+    {
+        var gm = GameManager.Instance;
         if (asteroids == null || asteroids.Count == 0)
-            return;
+            return null;
 
         List<GameManager.AsteroidData> validAsteroids = new();
 
@@ -43,22 +53,43 @@ public class TargetSpawner : MonoBehaviour
         }
 
         if (validAsteroids.Count == 0)
-            return;
+            return null;
 
-        GameManager.AsteroidData centerAsteroid =
-            validAsteroids[Random.Range(0, validAsteroids.Count)];
+        List<GameManager.AsteroidData> boundedAsteroids = new();
+        foreach (var asteroid in validAsteroids)
+        {
+            Vector3 pos = asteroid.position;
 
+            if (
+                pos.x >= -100f && pos.x <= 100f &&
+                pos.z >= -100f && pos.z <= 100f
+            )
+            {
+                boundedAsteroids.Add(asteroid);
+            }
+        }
+
+        if (boundedAsteroids.Count == 0)
+            return null;
+
+        GameManager.AsteroidData centerAsteroid = boundedAsteroids[Random.Range(0, boundedAsteroids.Count)];
         Vector3 clusterCenter = centerAsteroid.position;
 
         ClearArea(clusterCenter, asteroids);
 
-        TargetGroup chosenGroup =
-            targetGroups[Random.Range(0, targetGroups.Count)];
+        TargetGroup chosenGroup = targetGroups[Random.Range(0, targetGroups.Count)];
 
-        // Local overlap tracking
+        RenderSettings.skybox = chosenGroup.Skybox;
+        DynamicGI.UpdateEnvironment();
+
+        GameObject centerObstacle = Instantiate(chosenGroup.targetNavMeshObstaclePrefab, clusterCenter, Quaternion.identity);
+        area.asteroids.Add(new GameManager.AsteroidData(clusterCenter, 0f, centerObstacle));
+        centerObstacle.SetActive(false);
+        
         List<Vector3> placedPositions = new();
         List<float> placedRadii = new();
 
+        int count = 0;
         for (int i = 0; i < rocksPerCluster; i++)
         {
             int attempts = 0;
@@ -71,21 +102,12 @@ public class TargetSpawner : MonoBehaviour
 
             do
             {
-                Vector2 offset2D =
-                    Random.insideUnitCircle * clusterRadius;
+                Vector2 offset2D = Random.insideUnitCircle * clusterRadius;
 
-                spawnPos = clusterCenter +
-                           new Vector3(offset2D.x, 0f, offset2D.y);
-
-                prefab =
-                    chosenGroup.prefabs[
-                        Random.Range(0, chosenGroup.prefabs.Length)
-                    ];
-
+                spawnPos = clusterCenter + new Vector3(offset2D.x, 0f, offset2D.y);
+                prefab = chosenGroup.prefabs[Random.Range(0, chosenGroup.prefabs.Length)];
                 scale = Random.Range(minScale, maxScale);
-
-                radius =
-                    GetPrefabRadius(prefab) * scale + extraSpacing;
+                radius = GetPrefabRadius(prefab) * scale + extraSpacing;
 
                 attempts++;
 
@@ -104,35 +126,27 @@ public class TargetSpawner : MonoBehaviour
 
             Quaternion rot = Random.rotation;
 
-            GameObject rock =
-                Instantiate(prefab, spawnPos, rot);
+            GameObject rock = Instantiate(prefab, spawnPos, rot);
+            count += 1;
 
             rock.transform.localScale *= scale;
+            rock.layer = layer;
 
-            float actualRadius =
-                GetPrefabRadius(prefab) * scale;
+            float actualRadius = GetPrefabRadius(prefab) * scale;
 
-            var gm = GameManager.Instance;
-
-            gm.RegisterAsteroid(
-                spawnPos,
-                actualRadius,
-                rock
-            );
-
-            NavMeshObstacle obstacle = rock.AddComponent<NavMeshObstacle>();
-            obstacle.carving = true;
-
-            obstacle.shape = NavMeshObstacleShape.Capsule;
-
-            obstacle.radius = radius / 2f;
-            obstacle.height = radius;
+            area.asteroids.Add(new GameManager.AsteroidData(spawnPos, actualRadius, rock));
 
             placedPositions.Add(spawnPos);
             placedRadii.Add(radius);
 
             rock.SetActive(false);
         }
+
+        Return r = new Return();
+        r.target = centerObstacle;
+        r.coords = clusterCenter;
+        r.num = count;
+        return r;
     }
 
     bool IsValidPosition(
@@ -144,9 +158,7 @@ public class TargetSpawner : MonoBehaviour
     {
         for (int i = 0; i < positions.Count; i++)
         {
-            float dist =
-                Vector3.Distance(pos, positions[i]);
-
+            float dist = Vector3.Distance(pos, positions[i]);
             if (dist < (radius + radii[i]))
                 return false;
         }

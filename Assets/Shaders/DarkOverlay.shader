@@ -16,7 +16,7 @@ SubShader
 
         Stencil
         {
-            Ref 1
+            Ref 5
             Comp NotEqual
         }
 

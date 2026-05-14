@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 3697865584978452976}
   - component: {fileID: 8192142392228363880}
   - component: {fileID: 3382328334410011260}
+  - component: {fileID: -3553333830280054769}
   m_Layer: 0
   m_Name: Diamond Ore 6
-  m_TagString: Untagged
+  m_TagString: Rock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+  spinRate: 0
 --- !u!135 &3382328334410011260
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -128,3 +130,24 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.2329814
   m_Center: {x: -0.031678736, y: -0.05336654, z: 0.16583371}
+--- !u!114 &-3553333830280054769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8506288667181716253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e086a87b32d648a5969f9ba55bc376a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetController
+  targetColor: {r: 0, g: 0.41568628, b: 0.6431373, a: 1}
+  rocketPrefab: {fileID: 1093844046396689803, guid: 141b45f4cdcf04b98a2e67b6bf2d9f7a, type: 3}
+  launchSpeed: 20
+  acceleration: 4
+  lifetime: 6
+  surfaceOffset: 0.5
+  attachDelay: 0.5
+  shakeAmount: 0.08
+  shakeSpeed: 25

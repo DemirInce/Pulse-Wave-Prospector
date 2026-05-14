@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4616968784960956353}
   - component: {fileID: 5197295071289826802}
   - component: {fileID: -5789525275560494347}
+  - component: {fileID: 3328864887463735360}
   m_Layer: 0
   m_Name: Gold Ore 1
   m_TagString: Rock
@@ -128,3 +129,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RockController
   minSpinRate: 2
   maxSpinRate: 9
+--- !u!208 &3328864887463735360
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5206921117575986139}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 3, y: 2.769, z: 3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0.17400001, y: 0.116000004, z: 0.11100001}
+  m_TimeToStationary: 0.5

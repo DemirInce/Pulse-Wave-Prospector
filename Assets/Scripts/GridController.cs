@@ -8,6 +8,8 @@ public class GridController : MonoBehaviour
     public RectTransform container;
     public GameObject squarePrefab;
     public GameObject linePrefab;
+    public GameObject shipDot;
+    public GameObject portalDot;
 
     [Header("Grid Settings")]
     public int gridSize = 4;
@@ -17,11 +19,13 @@ public class GridController : MonoBehaviour
     public Color defaultColor = new Color(0f, 1f, 0f, 0.1f);
 
     private List<Image> squares = new List<Image>();
+    private List<GameObject> shipDots = new List<GameObject>();
+    private List<GameObject> portalDots = new List<GameObject>();
 
     void Start()
     {
         DrawGrid();
-        HighlightSquare(0, 0);
+        HighlightSquare();
     }
 
     void DrawGrid()
@@ -32,13 +36,12 @@ public class GridController : MonoBehaviour
         float cellWidth = width / gridSize;
         float cellHeight = height / gridSize;
 
-        // --- Create Squares ---
         for (int row = 0; row < gridSize; row++)
         {
             for (int col = 0; col < gridSize; col++)
             {
                 GameObject square = Instantiate(squarePrefab, container);
-                square.transform.SetAsFirstSibling(); // send behind other UI
+                square.transform.SetAsFirstSibling();
 
                 RectTransform rt = square.GetComponent<RectTransform>();
                 Image img = square.GetComponent<Image>();
@@ -55,10 +58,40 @@ public class GridController : MonoBehaviour
                 rt.anchoredPosition = new Vector2(x, y);
 
                 squares.Add(img);
+
+                GameObject dot = Instantiate(shipDot, container);
+                dot.GetComponent<Image>().color = Color.blue;
+
+                RectTransform dotRT = dot.GetComponent<RectTransform>();
+
+                dotRT.anchorMin = Vector2.zero;
+                dotRT.anchorMax = Vector2.zero;
+                dotRT.pivot = new Vector2(0.5f, 0.5f);
+
+                dotRT.localRotation = Quaternion.Euler(0f, 0f, 90f);
+
+                dotRT.anchoredPosition = new Vector2(x, y);
+
+                dot.SetActive(false);
+
+                shipDots.Add(dot);
+
+                GameObject portal = Instantiate(portalDot, container);
+
+                RectTransform portalRT = portal.GetComponent<RectTransform>();
+
+                portalRT.anchorMin = Vector2.zero;
+                portalRT.anchorMax = Vector2.zero;
+                portalRT.pivot = new Vector2(0.5f, 0.5f);
+
+                portalRT.anchoredPosition = new Vector2(x, y);
+
+                portal.SetActive(false);
+
+                portalDots.Add(portal);
             }
         }
 
-        // --- Vertical Lines ---
         for (int i = 1; i < gridSize; i++)
         {
             GameObject line = Instantiate(linePrefab, container);
@@ -76,7 +109,6 @@ public class GridController : MonoBehaviour
             rt.anchoredPosition = new Vector2(x, height / 2f);
         }
 
-        // --- Horizontal Lines ---
         for (int i = 1; i < gridSize; i++)
         {
             GameObject line = Instantiate(linePrefab, container);
@@ -95,17 +127,30 @@ public class GridController : MonoBehaviour
         }
     }
 
-    public void HighlightSquare(int row, int col)
+    public void HighlightSquare()
     {
+        ResetHighlights();
+
+        var gm = GameManager.Instance;
+
+        int col = (int)gm.highlightedArea.y;
+        int row = (int)gm.highlightedArea.x;
+
         int index = col * gridSize + row;
 
         if (index < 0 || index >= squares.Count)
         {
-//            Debug.LogWarning("Invalid square index");
             return;
         }
 
         squares[index].color = highlightColor;
+
+        if (index >= 0 && index < portalDots.Count)
+        {
+            portalDots[index].SetActive(false);
+        }
+
+        shipDots[index].SetActive(true);
     }
 
     public void ResetHighlights()
@@ -113,6 +158,40 @@ public class GridController : MonoBehaviour
         foreach (var img in squares)
         {
             img.color = defaultColor;
+        }
+
+        foreach (var dot in shipDots)
+        {
+            dot.SetActive(false);
+        }
+    }
+
+    public void SetPortal(int x, int y)
+    {
+        foreach (var dot in portalDots)
+        {
+            dot.SetActive(false);
+        }
+
+        int col = y;
+        int row = x;
+
+        int index = col * gridSize + row;
+
+        if (index < 0 || index >= portalDots.Count)
+        {
+            return;
+        }
+
+        var gm = GameManager.Instance;
+
+        bool playerHere =
+            (int)gm.highlightedArea.x == x &&
+            (int)gm.highlightedArea.y == y;
+
+        if (!playerHere)
+        {
+            portalDots[index].SetActive(true);
         }
     }
 }
